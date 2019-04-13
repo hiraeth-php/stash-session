@@ -1,5 +1,5 @@
 {
-    "name": "hiraeth/harmony",
+    "name": "hiraeth/stash-session",
     "description": "Cache based session storage via stash for the Hiraeth Nano Framework",
     "license": "MIT",
     "authors": [
