@@ -36,8 +36,7 @@ class HandlerDelegate implements Hiraeth\Delegate
 		$pool    = $manager->get('session');
 
 		return new Psr6SessionHandler($pool, [
-			'ttl'    => $app->getEnvironment('SESSION.TTL', 60 * 60 * 2),
-			'prefix' => 'sessions/'
+			'ttl' => $app->getEnvironment('SESSION.TTL', 60 * 60 * 2)
 		]);
 	}
 }
