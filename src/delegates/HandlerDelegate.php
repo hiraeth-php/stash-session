@@ -10,6 +10,8 @@ use Cache\SessionHandler\Psr6SessionHandler;
  */
 class HandlerDelegate implements Hiraeth\Delegate
 {
+	const DEFAULT_TTL = 60 * 60 * 2;
+
 	/**
 	 * Get the class for which the delegate operates.
 	 *
@@ -24,6 +26,15 @@ class HandlerDelegate implements Hiraeth\Delegate
 
 
 	/**
+	 *
+	 */
+	public function __construct(Hiraeth\Caching\PoolManagerInterface $manager)
+	{
+		$this->manager = $manager;
+	}
+
+
+	/**
 	 * Get the instance of the class for which the delegate operates.
 	 *
 	 * @access public
@@ -32,11 +43,9 @@ class HandlerDelegate implements Hiraeth\Delegate
 	 */
 	public function __invoke(Hiraeth\Application $app): object
 	{
-		$manager = $app->get(Hiraeth\Caching\PoolManager::class);
-		$pool    = $manager->get('session');
+		$pool = $this->manager->get('session');
+		$ttl  = $app->getEnvironment('SESSION.TTL', static::DEFAULT_TTL);
 
-		return new Psr6SessionHandler($pool, [
-			'ttl' => $app->getEnvironment('SESSION.TTL', 60 * 60 * 2)
-		]);
+		return new Psr6SessionHandler($pool, ['ttl' => $ttl]);
 	}
 }
