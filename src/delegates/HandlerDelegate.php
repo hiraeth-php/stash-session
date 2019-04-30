@@ -10,8 +10,6 @@ use Cache\SessionHandler\Psr6SessionHandler;
  */
 class HandlerDelegate implements Hiraeth\Delegate
 {
-	const DEFAULT_TTL = 60 * 60 * 2;
-
 	/**
 	 * Get the class for which the delegate operates.
 	 *
@@ -44,7 +42,7 @@ class HandlerDelegate implements Hiraeth\Delegate
 	public function __invoke(Hiraeth\Application $app): object
 	{
 		$pool = $this->manager->get('session');
-		$ttl  = $app->getEnvironment('SESSION.TTL', static::DEFAULT_TTL);
+		$ttl  = $app->getEnvironment('SESSION.TTL', ini_get(session.gc_maxlifetime));
 
 		return new Psr6SessionHandler($pool, ['ttl' => $ttl]);
 	}
