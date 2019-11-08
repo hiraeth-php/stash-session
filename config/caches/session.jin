@@ -16,4 +16,10 @@
 	;
 	;
 
-	path = storage/sessions
+	[&.options]
+
+		;
+		;
+		;
+
+		path = storage/sessions
