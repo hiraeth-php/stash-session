@@ -3,6 +3,7 @@
 namespace Hiraeth\Stash\Session;
 
 use Hiraeth;
+use Hiraeth\Caching;
 use Cache\SessionHandler\Psr6SessionHandler;
 
 /**
@@ -10,6 +11,12 @@ use Cache\SessionHandler\Psr6SessionHandler;
  */
 class HandlerDelegate implements Hiraeth\Delegate
 {
+	/**
+	 *
+	 */
+	protected $manager = NULL;
+
+
 	/**
 	 * Get the class for which the delegate operates.
 	 *
@@ -26,7 +33,7 @@ class HandlerDelegate implements Hiraeth\Delegate
 	/**
 	 *
 	 */
-	public function __construct(Hiraeth\Caching\PoolManagerInterface $manager)
+	public function __construct(Caching\PoolManager $manager)
 	{
 		$this->manager = $manager;
 	}
