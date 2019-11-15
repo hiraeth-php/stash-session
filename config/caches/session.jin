@@ -22,4 +22,4 @@
 		;
 		;
 
-		path = storage/sessions
+		path = dir(storage/sessions)
