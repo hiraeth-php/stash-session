@@ -7,7 +7,7 @@
 	;
 
 	aliases = {
-		"SessionHandlerInterface": "Cache\SessionHandler\Psr6SessionHandler"
+		"SessionHandlerInterface": "Hiraeth\Stash\Session\Handler"
 	}
 
 	;

@@ -4,7 +4,6 @@ namespace Hiraeth\Stash\Session;
 
 use Hiraeth;
 use Hiraeth\Caching;
-use Cache\SessionHandler\Psr6SessionHandler;
 
 /**
  *
@@ -26,7 +25,7 @@ class HandlerDelegate implements Hiraeth\Delegate
 	 */
 	static public function getClass(): string
 	{
-		return Psr6SessionHandler::class;
+		return Handler::class;
 	}
 
 
@@ -51,6 +50,6 @@ class HandlerDelegate implements Hiraeth\Delegate
 		$pool = $this->manager->get('session');
 		$ttl  = $app->getEnvironment('SESSION_TTL', ini_get('session.gc_maxlifetime'));
 
-		return new Psr6SessionHandler($pool, ['ttl' => $ttl]);
+		return new Handler($pool, ['ttl' => $ttl]);
 	}
 }
