@@ -4,6 +4,7 @@ namespace Hiraeth\Stash\Session;
 
 use SessionHandlerInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Stash\Pool;
 
 /**
  *
@@ -16,7 +17,7 @@ use Psr\Cache\CacheItemPoolInterface;
 class Handler implements SessionHandlerInterface
 {
 	/**
-	 * @var CacheItemPoolInterface
+	 * @var Pool
 	 */
 	private $cache;
 
@@ -34,12 +35,12 @@ class Handler implements SessionHandlerInterface
 
 
 	/**
-	 * @param CacheItemPoolInterface $cache
-	 * @param array $options An array of options including 'ttl' and 'prefix
+	 * @param Pool $cache
+	 * @param array<string, mixed> $options An array of options including 'ttl' and 'prefix
 	 */
-	public function __construct(CacheItemPoolInterface $cache, array $options = [])
+	public function __construct(Pool $cache, array $options = [])
 	{
-		$this->ttl    = isset($options['ttl'])? (int) $options['ttl'] : 86400;
+		$this->ttl    = isset($options['ttl']) ? (int) $options['ttl'] : 86400;
 		$this->prefix = isset($options['prefix']) ? $options['prefix'] : 'psr6ses_';
 		$this->cache  = $cache;
 	}
@@ -48,27 +49,27 @@ class Handler implements SessionHandlerInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function open($savePath, $sessionName)
+	public function open(string $path, string $name): bool
 	{
-		return true;
+		return TRUE;
 	}
 
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function close()
+	public function close(): bool
 	{
-		return true;
+		return TRUE;
 	}
 
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function read($sessionId)
+	public function read(string $id): string
 	{
-		$item = $this->getCacheItem($sessionId);
+		$item = $this->getCacheItem($id);
 		if ($item->isHit()) {
 			return $item->get();
 		}
@@ -80,9 +81,9 @@ class Handler implements SessionHandlerInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function write($sessionId, $data)
+	public function write(string $id, string $data): bool
 	{
-		$item = $this->getCacheItem($sessionId);
+		$item = $this->getCacheItem($id);
 		$item->set($data)
 			->expiresAfter($this->ttl);
 
@@ -93,26 +94,35 @@ class Handler implements SessionHandlerInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function destroy($sessionId)
+	public function destroy(string $id): bool
 	{
-		return $this->cache->deleteItem($this->prefix.$sessionId);
+		return $this->cache->deleteItem($this->prefix . $id);
 	}
+
 
 	/**
 	 * Overload the gc function to restore basic garbage collection
+	 *
+	 * @return int
 	 */
-	public function gc($lifetime)
+	public function gc(int $lifetime): int
 	{
 		$this->cache->purge();
 
-		return TRUE;
+		//
+		// There is currently no way to get the number of deleted items which newer gc should
+		// return.  That said, we're not solidly worried about performance, so we'll just send
+		// a random number.  Improvements in stash would be good.
+		//
+
+		return rand(0, 100);
 	}
 
 
 	/**
 	 * @return \Psr\Cache\CacheItemInterface
 	 */
-	private function getCacheItem($session_id)
+	private function getCacheItem(string $session_id)
 	{
 		return $this->cache->getItem($this->prefix . $session_id);
 	}
