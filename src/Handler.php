@@ -49,7 +49,7 @@ class Handler implements SessionHandlerInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function open(string $path, string $name): bool
+	public function open($path, $name): bool
 	{
 		return TRUE;
 	}
@@ -67,7 +67,7 @@ class Handler implements SessionHandlerInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function read(string $id): string
+	public function read($id): string
 	{
 		$item = $this->getCacheItem($id);
 		if ($item->isHit()) {
@@ -81,7 +81,7 @@ class Handler implements SessionHandlerInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function write(string $id, string $data): bool
+	public function write($id, $data): bool
 	{
 		$item = $this->getCacheItem($id);
 		$item->set($data)
@@ -94,7 +94,7 @@ class Handler implements SessionHandlerInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function destroy(string $id): bool
+	public function destroy($id): bool
 	{
 		return $this->cache->deleteItem($this->prefix . $id);
 	}
@@ -105,7 +105,7 @@ class Handler implements SessionHandlerInterface
 	 *
 	 * @return int
 	 */
-	public function gc(int $lifetime): int
+	public function gc($lifetime): int
 	{
 		$this->cache->purge();
 
