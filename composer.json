@@ -16,8 +16,8 @@
     },
     "require": {
         "ext-pdo_sqlite": "*",
-        "hiraeth/stash": "^2.0",
-        "hiraeth/caching": "^2.0"
+        "hiraeth/app": "^1.0",
+        "hiraeth/stash": "^2.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.0"
