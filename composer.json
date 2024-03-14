@@ -15,7 +15,6 @@
         "classmap": ["src/"]
     },
     "require": {
-        "ext-pdo_sqlite": "*",
         "hiraeth/app": "^2.0",
         "hiraeth/stash": "^2.0"
     },
