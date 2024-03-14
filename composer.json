@@ -12,8 +12,8 @@
         }
     ],
     "require": {
-        "hiraeth/stash": "^1.0",
-        "hiraeth/caching": "^1.0"
+        "hiraeth/app": "^1.0",
+        "hiraeth/stash": "^1.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.11.19"
